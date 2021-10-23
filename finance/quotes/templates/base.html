@@ -23,6 +23,9 @@
         <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'add_stock' %}">Add Stock</a>
       </li>
       <li class="nav-item">
@@ -37,6 +40,16 @@
       <input class="form-control mr-sm-2" type="search" placeholder="Get Stock Quote" aria-label="Search" name="ticker">
       <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Stock Quote</button>
     </form>
+    &nbsp;&nbsp;
+    <span class="form-inline my-2 my-lg-0">
+      {% if user.is_authenticated %}
+        <button class="btn btn-outline-success my-2 my-sm-0">{{user.username}}</button>
+        &nbsp;&nbsp;
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-light my-2 my-sm-0">Login</a>
+      {% endif %}
+      </span>
   </div>
 </nav>
 

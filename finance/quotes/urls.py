@@ -1,11 +1,17 @@
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('profile', views.ProfileView.as_view(), name="profile"),
     path('about.html', views.about, name='about'),
     path('add_stock.html', views.add_stock, name='add_stock'),
     path('list_stock.html', views.list_stock, name='list_stock'),
     path('delete/<stock_id>', views.delete, name='delete'),  # 'delete/<stock_id>' we will use this format when we create a path without create a html file.We call it from add_stock.html
     path('delete_stock.html', views.delete_stock, name='delete_stock'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
