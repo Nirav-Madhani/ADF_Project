@@ -6,6 +6,8 @@ import requests
 import json
 from .api import *
 from datetime import datetime
+from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 def home(request):
     ##Detail View For Each Ticker
@@ -30,6 +32,9 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html', {})
+
+class ProfileView(LoginRequiredMixin ,TemplateView):
+    template_name = 'profile.html'
 
 def add_stock(request):
     if request.method == 'POST':
