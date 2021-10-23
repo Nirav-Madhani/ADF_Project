@@ -1,6 +1,8 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 from .import views
 
 urlpatterns = [
@@ -12,6 +14,7 @@ urlpatterns = [
     path('list_stock.html', views.list_stock, name='list_stock'),
     path('delete/<stock_id>', views.delete, name='delete'),  # 'delete/<stock_id>' we will use this format when we create a path without create a html file.We call it from add_stock.html
     path('delete_stock.html', views.delete_stock, name='delete_stock'),
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('quotes/favicon.ico')))
 ]
 
 urlpatterns += staticfiles_urlpatterns()
