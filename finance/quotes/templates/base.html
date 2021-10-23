@@ -28,9 +28,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'delete_stock' %}">Delete Stock</a>
       </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_stock' %}">List Stock</a>
+      </li>
     </ul>
-    <form action="{% url 'home' %}" class="form-inline my-2 my-lg-0" method="POST">
-        {% csrf_token %}
+    <form action="{% url 'home' %}" class="form-inline my-2 my-lg-0" method="GET">
+      <!--{% csrf_token %}-->
       <input class="form-control mr-sm-2" type="search" placeholder="Get Stock Quote" aria-label="Search" name="ticker">
       <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Stock Quote</button>
     </form>

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Stock List</h1>
+<br>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Company Name</th>
+      <th scope="col">Stock Price</th>
+      <th scope="col">Previous Close</th>
+      <th scope="col">Market Cap</th>
+      <th scope="col">YTD Change</th>
+      <th scope="col">52WK High</th>
+      <th scope="col">52WK Low</th>
+    </tr>
+  </thead>
+  <tbody>
+{% if ticker %}
+
+
+            {% for key,list_item in ticker.items %}
+                <tr>
+                    <th scope="row">{{ list_item.shortName }}</th>
+                    <td>${{ list_item.regularMarketPrice }}</td>
+                    <td>${{ list_item.regularMarketPreviousClose }}</td>
+                    <td>${{ list_item.marketCap }}</td>
+                    <td>{{ list_item.ytdChange }}%</td>
+                    <td>${{ list_item.week52High }}</td>
+                    <td>${{ list_item.week52Low }}</td>
+                </tr>
+            {% endfor %}
+
+
+
+  </tbody>
+</table>
+<!--
+{{ticker.items}}
+-->
+{% endif %}
+
+<br><br>
+
+{% for item in ticker.keys %}
+    <a href="{% url 'delete' item %}" class="btn btn-danger">Delete {{ item }}</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% endfor %}
+
+{% endblock %}
