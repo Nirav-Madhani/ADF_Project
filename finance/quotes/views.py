@@ -21,7 +21,7 @@ def home(request):
         #print(tickerData.price)
         for ticker in tickerData.summary_detail.keys():
             return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,
-        'chart':tickerData.history(start='2021-10-22',interval='1m')})
+        'chart':tickerData.history(start=datetime.strftime('%Y-%m-%d') ,interval='1m')})
     else:
         return render(request, 'home.html', {'ticker':"Enter a Ticker Symbol Above..."})
 
