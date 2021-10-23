@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if ticker %}
+    {{ ticker }}
+{% endif %}
+
+{% if api %}
+    {% if api == 'Error...' %}
+        There was a problem with your ticker symbol,
+        please try again.
+    {% else %}
+
+        <h1>{{ api.companyName }}</h1><br>
+        Price: ${{ price.regularMarketPrice }}<br>
+        Previous Close: {{ api.previousClose }}<br>
+        Market Cap: {{ api.marketCap }}<br>
+        YTD Change: {{ api.ytdChange }}<br>
+        Day Low : {{ api.dayLow  }}<br>
+        Day High: {{ api.dayHigh }}<br>
+        Year High : {{api.fiftyTwoWeekHigh}}<br>
+        Year Low : {{api.fiftyTwoWeekLow}}<br>
+        {{chart}}
+    {% endif %}
+{% endif %}
+
+
+{% endblock %}
+
+
+<!--
+API
+{'maxAge': 1, 'priceHint': 2, 'previousClose': 149.48, 'open': 149.69, 'dayLow': 148.64, 'dayHigh': 150.18, 'regularMarketPreviousClose': 149.48, 'regularMarketOpen': 149.69, 'regularMarketDayLow': 148.64, 'regularMarketDayHigh': 150.18, 'dividendRate': 0.88, 'dividendYield': 0.0058999998, 'exDividendDate': '2021-08-06 05:30:00', 'payoutRatio': 0.16309999, 'fiveYearAvgDividendYield': 1.24, 'beta': 1.222222, 'trailingPE': 29.253134, 'forwardPE': 26.30722, 'volume': 33144587, 'regularMarketVolume': 33144587, 'averageVolume': 76053850, 'averageVolume10days': 71411500, 'averageDailyVolume10Day': 71411500, 'bid': 149.12, 'ask': 149.13, 'bidSize': 1000, 'askSize': 1300, 'marketCap': 2470025101312, 'fiftyTwoWeekLow': 107.32, 'fiftyTwoWeekHigh': 157.26, 'priceToSalesTrailing12Months': 7.11505, 'fiftyDayAverage': 146.31114, 'twoHundredDayAverage': 139.1566, 'trailingAnnualDividendRate': 0.835, 'trailingAnnualDividendYield': 0.005586032, 'currency': 'USD', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'algorithm': None, 'tradeable': False}
+Price
+{'maxAge': 1, 'preMarketChangePercent': 0.00137143, 'preMarketChange': 0.205002, 'preMarketTime': '2021-10-22 18:59:59', 'preMarketPrice': 149.685, 'preMarketSource': 'FREE_REALTIME', 'regularMarketChangePercent': -0.0014382951, 'regularMarketChange': -0.21499634, 'regularMarketTime': '2021-10-22 22:25:37', 'priceHint': 2, 'regularMarketPrice': 149.265, 'regularMarketDayHigh': 150.18, 'regularMarketDayLow': 148.64, 'regularMarketVolume': 33619166, 'regularMarketPreviousClose': 149.48, 'regularMarketSource': 'FREE_REALTIME', 'regularMarketOpen': 149.69, 'exchange': 'NMS', 'exchangeName': 'NasdaqGS', 'exchangeDataDelayedBy': 0, 'marketState': 'REGULAR', 'quoteType': 'EQUITY', 'symbol': 'AAPL', 'underlyingSymbol': None, 'shortName': 'Apple Inc.', 'longName': 'Apple Inc.', 'currency': 'USD', 'quoteSourceName': 'Nasdaq Real Time Price', 'currencySymbol': '$', 'fromCurrency': None, 'toCurrency': None, 'lastMarket': None, 'marketCap': 2467380330496}
+
+-->
