@@ -1,3 +1,4 @@
+#https://pypi.org/project/yahooquery/2.2.5/
 from yahooquery import Ticker
 import requests
 

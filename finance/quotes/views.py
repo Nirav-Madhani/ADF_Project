@@ -17,13 +17,15 @@ def home(request):
         # pk_56e9488bfddc4f64805631337556e19e    
         try:
              tickerData = GetSingleStock(ticker)     
-             print(tickerData.summary_detail[ticker])        
+             print(type(tickerData.history(period='1d', interval='1m')  ))
         except Exception as e:
             api = "Error..."
         #print(tickerData.price)
         for ticker in tickerData.summary_detail.keys():
-            return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,
-        'chart':tickerData.history(start=datetime.strftime('%Y-%m-%d') ,interval='1m')})
+
+            return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,'chart':
+            tickerData.history(period='1d', interval='1m').to_html()})# to_json for charts
+        #'chart':str(tickerData.history(start=datetime.now().strftime(r'%Y-%m-%d') ,interval='1m')[ticker]['indicators']['quote'])})
     else:
         return render(request, 'home.html', {'ticker':"Enter a Ticker Symbol Above..."})
 
@@ -40,11 +42,13 @@ def add_stock(request):
     if request.method == 'POST':
         form = StockForm(request.POST or None)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             messages.success(request, ("Stock Has Been Added!"))
             return redirect('list_stock')
     else:
-        ticker = Stock.objects.all()
+        ticker = Stock.objects.filter(user=request.user)
         output = []
         tickerList = " ".join([t.ticker for t in ticker])
         print(tickerList)
@@ -55,7 +59,7 @@ def add_stock(request):
         return render(request, 'add_stock.html', {'ticker':tickerData.summary_detail|tickerData.price, 'output':output})
 
 def list_stock(request):
-    ticker = Stock.objects.all()
+    ticker = Stock.objects.filter(user=request.user)
     output = []
     tickerList = " ".join([t.ticker for t in ticker])
     print(tickerList)
@@ -66,12 +70,12 @@ def list_stock(request):
 
 
 def delete(request, stock_id):
-    item = Stock.objects.get(ticker=stock_id) # To call the database and delete data by using id which is created automaticly
+    item = Stock.objects.filter(ticker=stock_id,user=request.user) # To call the database and delete data by using id which is created automaticly
     item.delete()
     messages.success(request, ("Stock Has Been Deleted!"))
     return redirect(delete_stock)
 
 
 def delete_stock(request):
-    ticker = Stock.objects.all()
+    ticker = Stock.objects.filter(user=request.user)
     return render(request, 'delete_stock.html', {'ticker':ticker})
