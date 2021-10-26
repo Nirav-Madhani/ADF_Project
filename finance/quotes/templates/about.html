@@ -4,6 +4,53 @@
 
 {% block content %}
 <section class="pt-3 pb-4">
+
+      <div class="container">
+          <div class="row mt-4">
+            <div class="col text-center">
+              <h3>
+                Our Awesome Team
+              </h3>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4 text-center">
+              {% load static %}
+                <img class = "img-fluid feature-img p-2 rounded-circle" src="{% static 'quotes/profile.jpg' %}" alt="Parth Desai">
+              <h5>
+                Parth Desai
+              </h5>
+              <p>
+                <i>- 18BCE150</i>
+              </p>
+    
+            </div>
+            <div class="col-md-4 text-center">
+              {% load static %}
+                <img class = "img-fluid feature-img p-2 rounded-circle" src="{% static 'quotes/2.png' %}" alt="Nirav Madhani">
+              <h5>
+                Nirav Madhani
+              </h5>
+              <p>
+                <i>- 18BCE135</i>
+              </p>
+    
+            </div>
+            <div class="col-md-4 text-center">
+                
+                {% load static %}
+                <img class = "img-fluid feature-img p-2 rounded-circle" src="{% static 'quotes/3.png' %}" alt="Parth Panchal">
+                <h5>
+                  Parth Panchal
+                </h5>
+                <p>
+                  <i>- 18BCE147</i>
+                </p>
+            </div>
+          </div>
+  </section>
+=======
   <div class="container">
     <div class="row mt-4">
       <div class="col text-center">
@@ -60,5 +107,5 @@
     <p>The “Add Stock” link is a page designed to show the tickers in the user’s portfolio and allows them to delete them individually as the investment strategy changes over time. Overall, the goal was to utilize an API to get stock information and allow the application to also utilize a database for this information.</p>
   </div>
 </section>
-  
+ 
 {% endblock %}
