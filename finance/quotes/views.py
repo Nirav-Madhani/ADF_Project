@@ -21,10 +21,12 @@ def home(request):
         except Exception as e:
             api = "Error..."
         #print(tickerData.price)
-        for ticker in tickerData.summary_detail.keys():
-
-            return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,'chart':
-            tickerData.history(period='1d', interval='1m').to_html()})# to_json for charts
+        
+        df = tickerData.history(period='1d', interval='1m')
+        
+        print(df.to_csv())
+        return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,'chart':
+        df.to_csv()})# to_json for charts
         #'chart':str(tickerData.history(start=datetime.now().strftime(r'%Y-%m-%d') ,interval='1m')[ticker]['indicators']['quote'])})
     else:
         return render(request, 'home.html', {'ticker':"Enter a Ticker Symbol Above..."})

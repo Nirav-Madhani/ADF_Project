@@ -21,8 +21,9 @@
         Day High: {{ api.dayHigh }}<br>
         Year High : {{api.fiftyTwoWeekHigh}}<br>
         Year Low : {{api.fiftyTwoWeekLow}}<br>
+        <pre>
          {% autoescape off %}{{chart}}{% endautoescape %}
-        
+        </pre>
     {% endif %}
 {% endif %}
 
