@@ -9,32 +9,26 @@ from datetime import datetime
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
+import requests
+import json
 
-# Create your views here.
 def home(request):
-    ##Detail View For Each Ticker
-    if  request.method == 'GET' and 'ticker' in request.GET:
-        ticker = request.GET['ticker']
-        print(ticker)
-        # pk_56e9488bfddc4f64805631337556e19e    
+    import requests
+    import json
+    if request.method == 'POST':
+        ticker = request.POST['ticker']
+        api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + ticker + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
+    
+        # for error handling
         try:
-             tickerData = GetSingleStock(ticker)     
-             print(type(tickerData.history(period='1d', interval='1m')  ))
+            api = json.loads(api_request.content)
+        #create an exception
         except Exception as e:
-            api = "Error..."
-        #print(tickerData.price)
-        
-        df = tickerData.history(period='1d', interval='1m')
-        
-        print(df.to_csv())
-        return render(request, 'home.html', {'api':tickerData.summary_detail[ticker],'price':tickerData.price,'chart':
-        df.to_csv()})# to_json for charts
-        #'chart':str(tickerData.history(start=datetime.now().strftime(r'%Y-%m-%d') ,interval='1m')[ticker]['indicators']['quote'])})
+            api = "Sorry there is an error"
+        return render(request, 'home.html', {'api': api} )
     else:
-        return render(request, 'home.html', {'ticker':"Enter a Ticker Symbol Above..."})
-
-    # return render(request, 'home.html', {'api':api}). Here, {'api':api} context dictionary
-
+        return render(request, 'home.html', {'ticker': "Enter Ticker Symbol"} )
+    
 def register_request(request):
     if (request.method == "POST"):
         form = NewUserForm(request.POST)
@@ -56,23 +50,25 @@ class ProfileView(LoginRequiredMixin ,TemplateView):
 def add_stock(request):
     if request.method == 'POST':
         form = StockForm(request.POST or None)
+        
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            messages.success(request, ("Stock Has Been Added!"))
-            return redirect('list_stock')
+            form.save()
+            messages.success(request, ("Stock ticker has been added to your Portfolio!"))
+            return redirect('add_stock')
     else:
-        ticker = Stock.objects.filter(user=request.user)
+        ticker = Stock.objects.all()
         output = []
-        tickerList = " ".join([t.ticker for t in ticker])
-        print(tickerList)
-        tickerData = GetAllStocks(tickerList)
-        #tickerData = tickerData.summary_detail.update(tickerData.price)
-        print(tickerData.summary_detail)
-
-        return render(request, 'add_stock.html', {'ticker':tickerData.summary_detail|tickerData.price, 'output':output})
-
+        for ticker_item in ticker:
+            api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + str(ticker_item) + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
+            
+            # for error handling
+            try:
+                api = json.loads(api_request.content)
+                output.append(api)
+            except Exception as e:
+                api = "Sorry there is an error"
+        return render(request, 'add_stock.html', {'ticker': ticker, 'output': output})
+    
 def list_stock(request):
     ticker = Stock.objects.filter(user=request.user)
     output = []
@@ -85,12 +81,12 @@ def list_stock(request):
 
 
 def delete(request, stock_id):
-    item = Stock.objects.filter(ticker=stock_id,user=request.user) # To call the database and delete data by using id which is created automaticly
+    item = Stock.objects.get(pk=stock_id)
     item.delete()
-    messages.success(request, ("Stock Has Been Deleted!"))
+    messages.success(request, ("Stock ticker has been removed from your Portfolio!"))
     return redirect(delete_stock)
 
 
 def delete_stock(request):
-    ticker = Stock.objects.filter(user=request.user)
-    return render(request, 'delete_stock.html', {'ticker':ticker})
+    ticker = Stock.objects.all()
+    return render(request, 'delete_stock.html', {'ticker': ticker})
