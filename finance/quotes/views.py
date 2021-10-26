@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Stock
-from .forms import StockForm
+from .forms import StockForm,NewUserForm
 from django.contrib import messages
 import requests
 import json
@@ -8,6 +8,8 @@ from .api import *
 from datetime import datetime
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
+
 # Create your views here.
 def home(request):
     ##Detail View For Each Ticker
@@ -31,6 +33,17 @@ def home(request):
 
     # return render(request, 'home.html', {'api':api}). Here, {'api':api} context dictionary
 
+def register_request(request):
+    if (request.method == "POST"):
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful." )
+            return redirect("home")
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+    form = NewUserForm()
+    return render (request=request, template_name="register.html", context={"register_form":form})
 
 def about(request):
     return render(request, 'about.html', {})
