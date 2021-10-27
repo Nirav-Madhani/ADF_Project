@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Stock
 from .forms import StockForm,NewUserForm
@@ -16,8 +17,8 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     import requests
     import json
-    if request.method == 'POST':
-        ticker = request.POST['ticker']
+    if request.method == 'GET':
+        ticker = request.GET['ticker']
         api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + ticker + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
     
         # for error handling
@@ -116,3 +117,10 @@ def delete(request, stock_id):
 def delete_stock(request):    
     ticker = Stock.objects.filter(user=request.user)
     return render(request, 'delete_stock.html', {'ticker': ticker})
+
+def searchView(request):
+    if len (request.GET['ticker']) < 1:
+        return HttpResponse("")
+    data = get_symbol_list(request.GET['ticker'])
+    print(data)
+    return render(request,'search.html',{'data':data})

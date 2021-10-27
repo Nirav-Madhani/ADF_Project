@@ -1,6 +1,7 @@
 #https://pypi.org/project/yahooquery/2.2.5/
 from yahooquery import Ticker
 import requests
+import json
 
 def GetSingleStock(tickerString):
     tickers = Ticker(tickerString)
@@ -17,7 +18,7 @@ def get_symbol_list(symbol):
     result = requests.get(url, headers=headers)
     result = result.content.decode()
     print(result)
-    return result
+    return json.loads(result)['quotes']
 
 
 get_symbol_list("Micro")
