@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 import requests
 import json
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     import requests
@@ -46,17 +47,23 @@ def about(request):
 
 class ProfileView(LoginRequiredMixin ,TemplateView):
     template_name = 'profile.html'
-
+@login_required
 def add_stock(request):
     if request.method == 'POST':
         form = StockForm(request.POST or None)
         
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             messages.success(request, ("Stock ticker has been added to your Portfolio!"))
             return redirect('add_stock')
     else:
-        ticker = Stock.objects.all()
+
+        if request.user.is_anonymous:
+            ticker = []
+        else:
+            ticker = Stock.objects.filter(user=request.user)
         output = []
         for ticker_item in ticker:
             api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + str(ticker_item) + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
@@ -69,24 +76,43 @@ def add_stock(request):
                 api = "Sorry there is an error"
         return render(request, 'add_stock.html', {'ticker': ticker, 'output': output})
     
-def list_stock(request):
-    ticker = Stock.objects.filter(user=request.user)
+def list_stock_old(request):
     output = []
-    tickerList = " ".join([t.ticker for t in ticker])
+    if request.user.is_anonymous:
+        tickerList = ''
+    else:
+        ticker = Stock.objects.filter(user=request.user)        
+        tickerList = " ".join([t.ticker for t in ticker])
     print(tickerList)
     tickerData = GetAllStocks(tickerList)
     #tickerData = tickerData.summary_detail.update(tickerData.price)
     #print(tickerData.summary_detail)
     return render(request, 'stockList.html', {'ticker':tickerData.summary_detail|tickerData.price, 'output':output})
-
-
+@login_required
+def list_stock(request):
+    if request.user.is_anonymous:
+        ticker = []
+    else:
+        ticker = Stock.objects.filter(user=request.user)
+    output = []
+    for ticker_item in ticker:
+        api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + str(ticker_item) + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
+        
+        # for error handling
+        try:
+            api = json.loads(api_request.content)
+            output.append(api)
+        except Exception as e:
+            api = "Sorry there is an error"
+    return render(request, 'stockList.html', {'ticker': ticker, 'output': output})
+@login_required
 def delete(request, stock_id):
     item = Stock.objects.get(pk=stock_id)
     item.delete()
     messages.success(request, ("Stock ticker has been removed from your Portfolio!"))
-    return redirect(delete_stock)
+    return redirect(list_stock)
 
 
-def delete_stock(request):
-    ticker = Stock.objects.all()
+def delete_stock(request):    
+    ticker = Stock.objects.filter(user=request.user)
     return render(request, 'delete_stock.html', {'ticker': ticker})

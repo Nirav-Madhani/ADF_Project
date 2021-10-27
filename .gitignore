@@ -3,3 +3,4 @@ Lib
 Scripts
 finance/finance/__pycache__/
 finance/quotes/__pycache__/
+*.pyc
