@@ -37,7 +37,7 @@ def home(request):
             api = "Sorry there is an error"
         return render(request, 'home.html', {'api': api} )
     else:
-        return render(request, 'home.html', {'ticker': "Enter Ticker Symbol"} )
+        return render(request, 'home.html')
 
 @csrf_exempt
 def view_stock(request):
@@ -82,8 +82,29 @@ def register_request(request):
 def about(request):
     return render(request, 'about.html', {})
 
-class ProfileView(LoginRequiredMixin ,TemplateView):
-    template_name = 'profile.html'
+def profile(request):
+    if request.method == 'POST':
+        form = StockForm(request.POST or None)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, ("Stock ticker has been added to your Portfolio!"))
+            return redirect('add_stock')
+    else:
+        ticker = Stock.objects.all()
+        output = []
+        for ticker_item in ticker:
+            api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + str(ticker_item) + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
+            
+            # for error handling
+            try:
+                api = json.loads(api_request.content)
+                output.append(api)
+            except Exception as e:
+                api = "Sorry there is an error"
+        return render(request, 'profile.html', {'ticker': ticker, 'output': output})
+
+
 @login_required
 def add_stock(request):
     if request.method == 'POST':
@@ -93,7 +114,7 @@ def add_stock(request):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
-            messages.success(request, ("Stock ticker has been added to your Portfolio!"))
+            messages.success(request, ("Stock ticker has been added to your profile!"))
             return redirect('add_stock')
     else:
 

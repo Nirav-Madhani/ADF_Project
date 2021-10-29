@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block title %}
+Stock Portfolio
+{% endblock %}
 
-{% if ticker %}
-    {{ ticker }}
-{% endif %}
+{% block content %}
 
 {% if api %}
     {% if api == 'Sorry there is an error' %}
@@ -21,6 +21,16 @@
     52 Week Low: ${{ api.week52Low }}<br/>
 
     {% endif %}
+{% else %}
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Stock Portfolio</h1>
+            <p class="lead">Simple, yet powerful app which allows you to manage your stock portfolio !</p>
+            <hr class="my-4">
+            <p>It uses API integration for getting real time stock information on the fly.</p>
+            <p class="lead">
+            <a class="btn btn-success btn-lg" href="{% url 'profile' %}" role="button">Let's get started</a>
+            </p>
+        </div>
 {% endif %}
 
 
