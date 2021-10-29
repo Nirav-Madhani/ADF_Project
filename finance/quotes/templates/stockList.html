@@ -22,36 +22,21 @@ onkeyup="myFunction()"
     </tr>
   </thead>
   <tbody>
-{% if ticker %}
-
-
-            {% for list_item in output %}
-              <tr>
-              <td scope="row">{{ list_item.companyName }}</th>
-              <td>{{ list_item.symbol }}</td>
-              <td>${{ list_item.latestPrice }}</td>
-              <td>${{ list_item.previousClose }}</td>
-              <td>${{ list_item.marketCap }}</td>
-              <td>{{ list_item.ytdChange }}%</td>
-              <td>${{ list_item.week52High }}</td>
-              <td>${{ list_item.week52Low }}</td>
-              </tr>
-            {% endfor %}
-
-
-
+    {% if ticker %}
+      {% for list_item in output %}
+        <tr>
+        <td scope="row">{{ list_item.companyName }}</th>
+        <td>{{ list_item.symbol }}</td>
+        <td>${{ list_item.latestPrice }}</td>
+        <td>${{ list_item.previousClose }}</td>
+        <td>${{ list_item.marketCap }}</td>
+        <td>{{ list_item.ytdChange }}%</td>
+        <td>${{ list_item.week52High }}</td>
+        <td>${{ list_item.week52Low }}</td>
+        </tr>
+      {% endfor %}
   </tbody>
 </table>
-<!--
-{{ticker.items}}
--->
 {% endif %}
-
-<br><br>
-
-{% for item in ticker.keys %}
-    <a href="{% url 'delete' item %}" class="btn btn-danger">Delete {{ item }}</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-{% endfor %}
 
 {% endblock %}
