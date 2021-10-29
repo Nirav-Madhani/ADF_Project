@@ -1,4 +1,6 @@
 {% load static %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +22,11 @@
         <select id="company">
             <option value="AAPL">Apple</option>
             <option value="MSFT">Microsoft</option>
+            <option value="GOOG">Alphabet</option>
+            <option value="FB">Meta</option>
+            <option value="AMZN">Amazon</option>
+            <option value="TSLA">Tesla</option>
+            <option value="V">Visa</option>
         </select>
         <button onclick="newGraph()">Update Graph</button>
     </div>
@@ -46,3 +53,4 @@
 	</script>     
 </body>
 </html>
+{% endblock %}
