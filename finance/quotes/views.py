@@ -16,11 +16,16 @@ from finance.settings import STOCKS_API_KEY,STOCKS_API_URL
 import requests
 import json
 from django.contrib.auth.decorators import login_required
+from django import template
+reg = template.Library()
+
+@reg.filter
+def split(value, arg):
+    return value.split(arg)
 
 def home(request):
-    import requests
-    import json
-    if request.method == 'GET':
+
+    if request.method == 'GET' and  'ticker' in request.GET.keys():
         ticker = request.GET['ticker']
         api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + ticker + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
     
@@ -139,7 +144,7 @@ def list_stock(request):
     return render(request, 'stockList.html', {'ticker': ticker, 'output': output})
 @login_required
 def delete(request, stock_id):
-    item = Stock.objects.get(pk=stock_id)
+    item = Stock.objects.get(pk=stock_id,user=request.user)
     item.delete()
     messages.success(request, ("Stock ticker has been removed from your Portfolio!"))
     return redirect(list_stock)

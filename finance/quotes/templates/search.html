@@ -1,3 +1,5 @@
 {% for quote in data%}
-<a href="/?ticker={{quote.symbol}}">{{quote.shortname}}</a>
+
+<a href="/?ticker={{quote.symbol|safe}}">{{quote.longname}}</a>
+
 {% endfor%}
