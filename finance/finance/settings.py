@@ -132,3 +132,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Username : desaiparth
 # Email : desaiparth2000@gmail.com
 # pwd : stocks
+
+STOCKS_API_KEY = 'zC992yeEkw5VTye5PFJY'
+
+STOCKS_API_URL = 'https://www.quandl.com/api/v3/datasets/EOD/'
