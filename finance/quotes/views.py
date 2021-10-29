@@ -10,6 +10,9 @@ from datetime import datetime
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from finance.settings import STOCKS_API_KEY,STOCKS_API_URL
 import requests
 import json
 from django.contrib.auth.decorators import login_required
@@ -30,7 +33,35 @@ def home(request):
         return render(request, 'home.html', {'api': api} )
     else:
         return render(request, 'home.html', {'ticker': "Enter Ticker Symbol"} )
-    
+
+@csrf_exempt
+def view_stock(request):
+    usr_msg = dict(success=False,
+                   message='Send something from view')
+    if request.method == 'POST':
+        ajax_data = request.body.decode('utf-8')
+        company = ajax_data.split('=')[1]
+        print("ajax_data", ajax_data.split('=')[1])
+        response = requests.get(STOCKS_API_URL+company+'.csv?api_key='+STOCKS_API_KEY)
+        result = response.content #.decode('utf-8')
+       
+        with open('quotes/static/csvfile.csv','wb') as file:
+            file.write(result)
+        user_msg = dict(success = True, message=ajax_data)
+
+        return JsonResponse(user_msg)
+      
+        
+    if request.method == 'GET':
+        response = requests.get(STOCKS_API_URL+'AAPL.csv?api_key='+STOCKS_API_KEY)
+        result = response.content #.decode('utf-8')
+        with open('quotes/static/csvfile.csv','wb') as file:
+            file.write(result)
+                # file.write('\n')
+
+        return render(request,'stocks.html',{'stock_data' : result})
+    return JsonResponse(usr_msg)
+
 def register_request(request):
     if (request.method == "POST"):
         form = NewUserForm(request.POST)
