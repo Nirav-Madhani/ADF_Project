@@ -9,7 +9,6 @@ from django_plotly_dash import DjangoDash
 # File contains Stock tickers for all NASDAQ symbols
 nasdaq = pd.read_csv('data/NASDAQcompanylist.csv')
 
-
 # Plotly Dash App applied within Django
 
 app = DjangoDash('stock-graphic')
@@ -19,13 +18,13 @@ app.layout = html.Div([
     # First row with inputs and button
 
     html.Div([
-        html.H3('Select stock symbols:', style={'paddingRight': '30px'}),
+        html.H3('Select stock symbols:', style={'paddingRight': '50px'}),
         dcc.Dropdown(id='stock-dropdown',
                      options=[dict(label=ticker, value=ticker) for ticker in nasdaq['Symbol']],
                      multi=True,),
     ], style=dict(display='inline-block',
                   verticalAlign='top',
-                  width='30%')),
+                  width='40%',)),
 
     html.Div([
         html.H3('Select date range'),
@@ -38,14 +37,14 @@ app.layout = html.Div([
             with_portal=True,
             start_date=date(2016, 1, 1),
             end_date=datetime.today()
-        )], style={'display':'inline-block'}),
+        )], style={'display':'inline-block', 'marginLeft': '30px'}),
 
     html.Div([
         html.Button(
             id='submit-button',
             n_clicks=0,
             children='Submit',
-            style={'fontSize': 24, 'marginLeft': '30px'}
+            style={'fontSize': 20, 'marginLeft': '30px'}
         ),
     ], style={'display': 'inline-block'}),
 
