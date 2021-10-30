@@ -3,6 +3,7 @@
 
 /.vscode
 Scripts
+*.pyc
 #settings.py
 
 ## Django Heroku ##

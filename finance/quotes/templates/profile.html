@@ -39,7 +39,7 @@ hr {
             <td>{{ list_item.ytdChange | floatformat:-2 }}%</td>
             <td>${{ list_item.week52High }}</td>
             <td>${{ list_item.week52Low }}</td>
-            <td><a href="" class="btn btn-outline-danger btn-sm">X</a></td>
+            <td><a href="/delete/{{list_item.symbol}}" class="btn btn-outline-danger btn-sm">X</a></td>
             </tr>
         {% endfor %}
     {% endif %}

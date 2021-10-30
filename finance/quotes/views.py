@@ -89,7 +89,7 @@ def profile(request):
             messages.success(request, ("Stock ticker has been added to your Portfolio!"))
             return redirect('add_stock')
     else:
-        ticker = Stock.objects.all()
+        ticker = Stock.objects.filter(user=request.user)
         output = []
         for ticker_item in ticker:
             api_request = requests.get("https://sandbox.iexapis.com/stable/stock/" + str(ticker_item) + "/quote?token=Tpk_c46f4087296c43358402984f3b26ed2f")
@@ -163,7 +163,7 @@ def list_stock(request):
     return render(request, 'stockList.html', {'ticker': ticker, 'output': output})
 @login_required
 def delete(request, stock_id):
-    item = Stock.objects.get(pk=stock_id,user=request.user)
+    item = Stock.objects.get(ticker=stock_id,user=request.user)
     item.delete()
     messages.success(request, ("Stock ticker has been removed from your Portfolio!"))
     return redirect(list_stock)
