@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}Profile{% endblock %}
 
@@ -22,6 +23,7 @@ hr {
         <th scope="col">Previous Close</th>
         <th scope="col">Market Cap</th>
         <th scope="col">Return YTD</th>
+        <th scope="col">PE Ratio</th>
         <th scope="col">52Wk High</th>
         <th scope="col">52Wk Low</th>
         <th scope="col">Delete Stock</th>
@@ -33,10 +35,11 @@ hr {
             <tr>
             <td scope="row">{{ list_item.symbol }}</td>
             <td>{{ list_item.companyName }}</th>
-            <td>${{ list_item.latestPrice | floatformat:-2 }}</td>
-            <td>${{ list_item.previousClose | floatformat:-2 }}</td>
-            <td>${{ list_item.marketCap }}</td>
+            <td>${{ list_item.latestPrice |floatformat:-2 }}</td>
+            <td>${{ list_item.previousClose |floatformat:-2 }}</td>
+            <td>${{ list_item.marketCap |intcomma }}</td>
             <td>{{ list_item.ytdChange | floatformat:-2 }}%</td>
+            <td>{{ list_item.peRatio }}</td>
             <td>${{ list_item.week52High }}</td>
             <td>${{ list_item.week52Low }}</td>
             <td><a href="/delete/{{list_item.symbol}}" class="btn btn-outline-danger btn-sm">X</a></td>

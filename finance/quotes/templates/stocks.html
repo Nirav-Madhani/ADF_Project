@@ -1,56 +1,13 @@
+{% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script> 
-    <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>   
-    
-    <title>Stock App</title>
-</head>
-<body style="padding-left: 18%">
-    
-    <div  style="margin-left: 30%">
-        <select id="company">
-            <option value="AAPL">Apple</option>
-            <option value="MSFT">Microsoft</option>
-            <option value="GOOG">Alphabet</option>
-            <option value="FB">Meta</option>
-            <option value="AMZN">Amazon</option>
-            <option value="TSLA">Tesla</option>
-            <option value="V">Visa</option>
-        </select>
-        <button onclick="newGraph()">Update Graph</button>
+    {% load plotly_dash %}
+
+
+    <div class="{% plotly_class name='stock-graphic' %} card" style="height: 100%; width: 100%">
+    {% plotly_app name='stock-graphic' ratio=1 %}
     </div>
-    <br>
-    
-	<script>
-        graph();
-        function newGraph(){
-            var value = $( "#company" ).val()
-            $.ajax({
-                url : "{% url 'view_stock' %}", 
-                type: "POST",
-                data:{ "company" : value },
-                dataType: 'json',               
-                // handle a successful response
-                success : function(jsondata) {console.log("This is the data returned to ajax " + JSON.stringify(jsondata)); 
-                graph();
-               
-            },
-                error : function() {console.log("Error");}
-            });
-        }
-        
-	</script>     
-</body>
-</html>
+<br>
+
+
 {% endblock %}

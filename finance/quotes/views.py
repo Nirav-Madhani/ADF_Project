@@ -19,6 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django import template
 reg = template.Library()
 
+api_key = 'Tpk_c46f4087296c43358402984f3b26ed2f'
+
 @reg.filter
 def split(value, arg):
     return value.split(arg)
@@ -41,28 +43,7 @@ def home(request):
 
 @csrf_exempt
 def view_stock(request):
-    usr_msg = dict(success=False, message='Send something from view')
-    if request.method == 'POST':
-        ajax_data = request.body.decode('utf-8')
-        company = ajax_data.split('=')[1]
-        print("ajax_data", ajax_data.split('=')[1])
-        response = requests.get(STOCKS_API_URL+company+'.csv?api_key='+STOCKS_API_KEY)
-        result = response.content
-       
-        with open('quotes/static/csvfile.csv','wb') as file:
-            file.write(result)
-        user_msg = dict(success = True, message=ajax_data)
-
-        return JsonResponse(user_msg)
-        
-    if request.method == 'GET':
-        response = requests.get(STOCKS_API_URL+'AAPL.csv?api_key='+STOCKS_API_KEY)
-        result = response.content #.decode('utf-8')
-        with open('quotes/static/csvfile.csv','wb') as file:
-            file.write(result)
-
-        return render(request,'stocks.html',{'stock_data' : result})
-    return JsonResponse(usr_msg)
+    return render(request, 'stocks.html', {})
 
 
 def register_request(request):
@@ -80,6 +61,7 @@ def register_request(request):
 def about(request):
     return render(request, 'about.html', {})
 
+@login_required
 def profile(request):
     if request.method == 'POST':
         form = StockForm(request.POST or None)
