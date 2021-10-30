@@ -37,8 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'crispy_forms',
-    'quotes'
+    'quotes',
+    'mathfilters',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'channels_redis',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
 ]
 
 ROOT_URLCONF = 'finance.urls'
@@ -71,6 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finance.wsgi.application'
 
+ASGI_APPLICATION = 'finance.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -101,6 +108,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+STATICFILES_FINDER = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DataAssetFinder',
+    'django_plotly_dash.finders.DataComponentFinder',
+]
+
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dpd_components',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -114,6 +135,17 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channel_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379), ],
+        }
+    }
+}
 
 
 # Static files (CSS, JavaScript, Images)
@@ -136,3 +168,7 @@ LOGOUT_REDIRECT_URL = '/'
 STOCKS_API_KEY = 'zC992yeEkw5VTye5PFJY'
 
 STOCKS_API_URL = 'https://www.quandl.com/api/v3/datasets/EOD/'
+
+api_key = 'Tpk_c46f4087296c43358402984f3b26ed2f'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'

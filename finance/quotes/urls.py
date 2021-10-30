@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
+from .dash_apps.finished_apps import stock_graphic
 from .import views
 
 urlpatterns = [
