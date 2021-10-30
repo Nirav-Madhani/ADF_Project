@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}
 Stock Portfolio
@@ -6,20 +7,55 @@ Stock Portfolio
 
 {% block content %}
 
+<style>
+ td,th {
+  text-align:center;
+}
+</style>
+
 {% if api %}
     {% if api == 'Sorry there is an error' %}
         There was a problem with your ticker symbol, please try again.
     {% else %}
 
-    <h2>{{ api.companyName }}</h2><br/>
-    Ticker: {{ api.symbol }}<br/>
-    Price: ${{ api.latestPrice }}<br/>
-    Previous Close: ${{ api.previousClose }}<br/>
-    Market Cap: ${{ api.marketCap }}<br/>
-    YTD Change: {{ api.ytdChange }}<br/>
-    52 Week High: ${{ api.week52High }}<br/>
-    52 Week Low: ${{ api.week52Low }}<br/>
+    <h2 align="center">{{ api.companyName }}</h2><br/>
 
+    <table style="width:80%" align='center' class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+                <th scope="row">Ticker</th>
+                <td>{{ api.symbol }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Price</th>
+                <td>${{ api.latestPrice |floatformat:-2  }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Previous Close</th>
+                <td>${{ api.previousClose |floatformat:-2 }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Market Cap</th>
+                <td>${{ api.marketCap |intcomma }}</td>
+            </tr>
+            <tr>
+                <th scope="row">YTD Change</th>
+                <td>{{ api.ytdChange | floatformat:-2 }}</td>
+            </tr>
+            <tr>
+                <th scope="row">PE Ratio</th>
+                <td>{{ api.peRatio}}</td>
+            </tr>
+            <tr>
+                <th scope="row">52 Week High</th>
+                <td>${{ api.week52High }}</td>
+            </tr>
+            <tr>
+                <th scope="row">52 Week Low</th>
+                <td>${{ api.week52Low }}</td>
+            </tr>
+        </tbody>
+    </table>
     {% endif %}
 {% else %}
         <div class="jumbotron">

@@ -143,6 +143,7 @@ def list_stock(request):
         except Exception as e:
             api = "Sorry there is an error"
     return render(request, 'stockList.html', {'ticker': ticker, 'output': output})
+
 @login_required
 def delete(request, stock_id):
     item = Stock.objects.get(ticker=stock_id,user=request.user)
@@ -150,7 +151,7 @@ def delete(request, stock_id):
     messages.success(request, ("Stock ticker has been removed from your Portfolio!"))
     return redirect(list_stock)
 
-
+@login_required
 def delete_stock(request):    
     ticker = Stock.objects.filter(user=request.user)
     return render(request, 'delete_stock.html', {'ticker': ticker})
