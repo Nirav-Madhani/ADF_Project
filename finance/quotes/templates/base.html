@@ -38,6 +38,9 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'view_stock' %}">View Graph</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'predict_home' %}">Predict Stock</a>
+      </li>
     </ul>
     <form action="{% url 'home' %}" class="form-inline my-2 my-lg-0" method="GET">
      
@@ -59,14 +62,13 @@
         <a href="{% url 'register' %}" class="btn btn-outline-info my-2 my-sm-0">Sign Up</a>
       {% endif %}
       </span>
-      
   </div>
- 
 </nav>
  <div class="dropdown-content" id="myDropdown">
-       
+
       </div>
 <div style="position:absolute;right:0;width:300px;display: inline-block;"> </div>
+
     <div class="container">
       <br>
 
@@ -90,6 +92,32 @@
   </body>
 </html>
 <style>
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -999;
+}
+
+.jumbotron
+{
+  background: rgba(255, 255, 255, 0); 
+}
+div.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.6;
+}
+
+div.transbox p {
+  margin: 5%;
+  font-weight: bold;
+  color: #000000;
+}
+
 .navbar {
   -webkit-box-shadow: 10px 10px 20px -3px rgba(0,0,0,0.75);
   -moz-box-shadow: 10px 10px 20px -3px rgba(0,0,0,0.75);

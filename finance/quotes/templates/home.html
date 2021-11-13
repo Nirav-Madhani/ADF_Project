@@ -58,11 +58,14 @@ Stock Portfolio
     </table>
     {% endif %}
 {% else %}
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" id="myVideo">
+            <source src="/static/home.mp4" type="video/mp4">
+        </video>
         <div class="jumbotron">
-            <h1 class="display-4">Welcome to Stock Portfolio</h1>
-            <p class="lead">Simple, yet powerful app which allows you to manage your stock portfolio !</p>
-            <hr class="my-4">
-            <p>It uses API integration for getting real time stock information on the fly.</p>
+            <h1 class="display-4" style="color:white;">Welcome to Stock Portfolio</h1>
+            <p class="lead" style="color:white;"><strong>Simple, yet powerful app which allows you to manage your stock portfolio !</strong></p>
+            <hr class="my-4" align='left' style="border: 1px solid white;width: 60%;">
+            <p style="color:white;">It uses API integration for getting real time stock information on the fly.</p>
             <p class="lead">
             <a class="btn btn-success btn-lg" href="{% url 'profile' %}" role="button">Let's get started</a>
             </p>
