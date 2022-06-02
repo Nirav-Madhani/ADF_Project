@@ -116,7 +116,7 @@ If you fork this website, **please attribute it** to the original author.
 
 <hr>
 
-![List Stocks](./quotes/screenshots/ListStock.png)
+![List Stocks](https://github.com/pycoder2000/Stock-Management/raw/main/quotes/screenshots/ListStock.png)
 
 <hr>
 
@@ -128,7 +128,7 @@ If you fork this website, **please attribute it** to the original author.
 
 <hr>
 
-![View Graph](./quotes/screenshots/GraphPage.png)
+![View Graph](https://github.com/pycoder2000/Stock-Management/raw/main/quotes/screenshots/GraphPage.png)
 
 <hr>
 
